@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<navbar th:replace="partials/navbar.html :: main-nav"></navbar>
 <h1>Welcome <span th:text="${username}">un</span></h1>
 
 <div th:each="item : ${shoppingCart}">
@@ -14,5 +14,7 @@
 <div class="dashboard" th:if="${isAdmin}">
     Dashboard
 </div>
+
+<footer th:replace="partials/footer :: footer"></footer>
 </body>
 </html>
