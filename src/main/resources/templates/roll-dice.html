@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Roll Dice</title>
+</head>
+<body>
+<ul>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="1">
+            <button  type="submit">1</button>
+        </form>
+    </li>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="2">
+            <button name="numGuessed" type="submit">2</button>
+        </form>
+    </li>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="3">
+            <button name="numGuessed" type="submit">3</button>
+        </form>
+    </li>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="4">
+            <button name="numGuessed" type="submit">4</button>
+        </form>
+    </li>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="5">
+            <button name="numGuessed" type="submit">5</button>
+        </form>
+    </li>
+    <li>
+        <form action="/roll-dice" method="post">
+            <input name="numGuessed" type="hidden" value="6">
+            <button name="numGuessed" type="submit">6</button>
+        </form>
+    </li>
+</ul>
+
+<h1>You guessed <span th:text="${numGuessed}"></span></h1>
+<h1>You rolled <span th:text="${random}"></span></h1>
+
+<h1 th:if="${numGuessed} == ${random}">
+    nice
+</h1>
+
+<h1 th:if="${numGuessed} != ${random}">
+    not nice
+</h1>
+
+</body>
+</html>
