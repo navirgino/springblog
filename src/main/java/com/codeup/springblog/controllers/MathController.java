@@ -27,9 +27,18 @@ public class MathController {
         return num_one * num_two;
     }
     @GetMapping("/divide/{n1}/by/{n2}")
+
     @ResponseBody
-    public double divide(@PathVariable double n1, @PathVariable double n2){
-        return n1 / n2;
+
+        public double divide(@PathVariable double n1, @PathVariable double n2) {
+        try {
+            return  n1 / n2;
+
+        } catch (ArithmeticException e) {
+            e.printStackTrace();
+            return 0.0;
+        }
     }
+
 }
 
