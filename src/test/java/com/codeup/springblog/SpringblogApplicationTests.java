@@ -9,5 +9,9 @@ class SpringblogApplicationTests {
     @Test
     void contextLoads() {
     }
+    @Test
+    void hello(){
+
+    }
 
 }
