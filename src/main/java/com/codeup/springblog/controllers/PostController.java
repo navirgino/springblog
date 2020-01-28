@@ -2,6 +2,7 @@ package com.codeup.springblog.controllers;
 
 
 import com.codeup.springblog.Post;
+import com.codeup.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,54 +12,85 @@ import java.util.List;
 
 @Controller
 public class PostController {
-    List<Post> posts = new ArrayList<>();
 
-    @GetMapping(path = "/posts")
-    public String postsIndexPage(Model model){
+    private List<Post> posts = new ArrayList<>();
 
-        Post post1 = new Post("titl1", "body1");
-        Post post2 = new Post("titl2", "body2");
-        Post post3 = new Post("titl3", "body3");
-        Post post4 = new Post("titl4", "body4");
-        posts.add(0, post1);
-        posts.add(1, post2);
-        posts.add(2, post3);
-        posts.add(3, post4);
-        model.addAttribute("posts", posts);
+    private PostRepository postsDao;
 
+    public PostController(PostRepository postsDao) {
+        this.postsDao = postsDao;
+    }
+
+    @GetMapping("/posts")
+    public String allPosts(Model model){
+        model.addAttribute("posts", returnPosts());
         return "posts/index";
     }
 
-    @GetMapping(path = "/posts/show")
-    public String viewOnePost(Model model)
-    {
-        Post newPost = new Post("my tweet", "banana time");
-        model.addAttribute("newPost", newPost);
-        return "posts/show";
+    @GetMapping("/posts/jpa")
+    @ResponseBody
+    public List<Post> returnPosts(){
+        return postsDao.findAll();
     }
 
-//    @GetMapping(path ="/posts/{id}")
-//    public String getPostById(@PathVariable long id, Model model){
-////        List<Post> posts = new ArrayList<>();
-//        Post onePost = new Post(1, "one", "one");
-//        Post twoPost = new Post(2, "two", "two");
-//        Post threePost = new Post(3, "three", "three");
-//        posts.add(0, onePost);
-//        posts.add(1, twoPost);
-//        posts.add(2, threePost);
-//        model.addAttribute("onePost", onePost);
-//        return "posts/index";
+
 //
+//    @PostMapping(path = "/posts/create")
+//    @ResponseBody
+//    public String createAnewPost(){
+//        Post post = new Post();
+//        post.setTitle("A new post!");
+//        post.setBody("A new body!");
+//        return "create a new post";
 //    }
 
-    @GetMapping(path = "/posts/create")
-    @ResponseBody
-    public String formForPost(){
-        return "view the form for creating a post";
+    @GetMapping("/posts/jpa/create")
+    public void createPost() {
+        Post post = new Post();
+        post.setTitle("a new post");
+        post.setBody("a new body");
+        postsDao.save(post);
     }
-    @PostMapping(path = "/posts/create")
-    @ResponseBody
-    public String createAnewPost(){
-        return "create a new post";
+
+    @GetMapping("posts/order")
+    public String searchResults(Model model){
+        model.addAttribute("searchResults", returnPostsByTitle());
+        return "posts/results";
     }
+
+    @GetMapping("posts/order/jpa")
+    @ResponseBody
+    public Post returnPostsByTitle()
+    {
+        return postsDao.findByTitle("t");
+    }
+
+//    @GetMapping("/posts/search")
+//    @ResponseBody
+//    public Post returnPostByTitle()
+//    {
+//        return postsDao.findByTitle("t");
+//    }
+
+
+//    @GetMapping(path = "/posts/show")
+//    public String viewOnePost(Model model)
+//    {
+//        Post newPost = new Post("my tweet", "banana time");
+//        model.addAttribute("newPost", newPost);
+//        return "posts/show";
+//    }
+
+
+//    @GetMapping("/posts/{id}")
+//    public String viewOnePostById(@PathVariable long id, Model model)
+//    {
+//        Post post1 = new Post(id,"Title 1", "Description 1");
+//        Post post2 = new Post(id,"Title 2", "Description 2");
+//        model.addAttribute("post1", post1);
+//        model.addAttribute("post2",post2);
+//        return "posts/show";
+//    }
+
+
 }
