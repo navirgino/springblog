@@ -11,10 +11,11 @@ import java.util.List;
 
 @Controller
 public class PostController {
+    List<Post> posts = new ArrayList<>();
+
     @GetMapping(path = "/posts")
     public String postsIndexPage(Model model){
 
-        List<Post> posts = new ArrayList<>();
         Post post1 = new Post("titl1", "body1");
         Post post2 = new Post("titl2", "body2");
         Post post3 = new Post("titl3", "body3");
@@ -37,14 +38,15 @@ public class PostController {
     }
 
 //    @GetMapping(path ="/posts/{id}")
-//    public String getPostById(@PathVariable String id){
-//        List<Post> posts = new ArrayList<>();
+//    public String getPostById(@PathVariable long id, Model model){
+////        List<Post> posts = new ArrayList<>();
 //        Post onePost = new Post(1, "one", "one");
 //        Post twoPost = new Post(2, "two", "two");
 //        Post threePost = new Post(3, "three", "three");
 //        posts.add(0, onePost);
 //        posts.add(1, twoPost);
 //        posts.add(2, threePost);
+//        model.addAttribute("onePost", onePost);
 //        return "posts/index";
 //
 //    }

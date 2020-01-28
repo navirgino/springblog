@@ -3,11 +3,11 @@ package com.codeup.springblog;
 public class Post {
     private String title;
     private String body;
-    private int id;
+    private long id;
 
     public Post(){}
 
-    public Post(int id, String title, String body){
+    public Post(long id, String title, String body){
         this.id = id;
         this.title = title;
         this.body = body;
