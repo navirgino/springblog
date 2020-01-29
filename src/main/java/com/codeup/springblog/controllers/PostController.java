@@ -14,56 +14,79 @@ import java.util.List;
 public class PostController {
 
     private List<Post> posts = new ArrayList<>();
-
     private PostRepository postsDao;
 
     public PostController(PostRepository postsDao) {
         this.postsDao = postsDao;
     }
+    /////////////////////////////////////////////////
 
-    @GetMapping("/posts")
+
+    @GetMapping(path = "/posts")
     public String allPosts(Model model){
         model.addAttribute("posts", returnPosts());
         return "posts/index";
     }
 
-    @GetMapping("/posts/jpa")
+    @GetMapping(path = "/posts/jpa")
     @ResponseBody
     public List<Post> returnPosts(){
         return postsDao.findAll();
     }
 
+    //get post info
+    @GetMapping(path = "/posts/update")
+    public String GetPostFormFromUpdateForm(@RequestParam String title,
+                           @RequestParam String body,
+                           Model m)
+    {
+        m.addAttribute("title", title);
+        m.addAttribute("body", body);
+        return "posts/update";
+    }
+    //return post info
+    @PostMapping(path = "/posts/update")
+    public String ReturnUpdatedPostForm(@RequestParam String title,
+                                      @RequestParam String body,
+                                      Model m)
+    {
+        m.addAttribute("title", title);
+        m.addAttribute("body", body);
+        Post updatedPost = new Post(title, body);
+        postsDao.save(updatedPost);
+        return "redirect:/posts";
+    }
 
-//
-//    @PostMapping(path = "/posts/create")
-//    @ResponseBody
-//    public String createAnewPost(){
-//        Post post = new Post();
-//        post.setTitle("A new post!");
-//        post.setBody("A new body!");
-//        return "create a new post";
+    //delete
+    @PostMapping(path = "/posts/{id}/delete")
+    public String deletePostById(@PathVariable long id)
+    {
+        postsDao.deleteById(id);
+        return "redirect:/posts";
+    }
 //    }
 
-    @GetMapping("/posts/jpa/create")
-    public void createPost() {
-        Post post = new Post();
-        post.setTitle("a new post");
-        post.setBody("a new body");
-        postsDao.save(post);
-    }
 
-    @GetMapping("posts/order")
-    public String searchResults(Model model){
-        model.addAttribute("searchResults", returnPostsByTitle());
-        return "posts/results";
-    }
-
-    @GetMapping("posts/order/jpa")
-    @ResponseBody
-    public Post returnPostsByTitle()
-    {
-        return postsDao.findByTitle("t");
-    }
+//    @GetMapping("/posts/jpa/create")
+//    public void createPost() {
+//        Post post = new Post();
+//        post.setTitle("a new post");
+//        post.setBody("a new body");
+//        postsDao.save(post);
+//    }
+//
+//    @GetMapping("posts/order")
+//    public String searchResults(Model model){
+//        model.addAttribute("searchResults", returnPostsByTitle());
+//        return "posts/results";
+//    }
+//
+//    @GetMapping("posts/order/jpa")
+//    @ResponseBody
+//    public Post returnPostsByTitle()
+//    {
+//        return postsDao.findByTitle("t");
+//    }
 
 //    @GetMapping("/posts/search")
 //    @ResponseBody

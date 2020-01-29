@@ -7,10 +7,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findByOrderByTitle();
     List<Post> findAll();
-    Post findByTitle(String title);
-//    Post findByBody(String body);
-//    Post findById(long id);
+
 
 }

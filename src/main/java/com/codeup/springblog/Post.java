@@ -35,7 +35,6 @@ public class Post {
 
     public Post(){}
 
-
     public Post(long id, String title, String body){
         this.id = id;
         this.title = title;
@@ -48,7 +47,7 @@ public class Post {
     }
 
 
-    public String findByTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -57,7 +56,7 @@ public class Post {
     }
 
 
-    public String findByBody() {
+    public String getBody() {
         return body;
     }
 

@@ -10,6 +10,14 @@
 <div th:each="post : ${posts}">
     <h1 th:text="${post.title}"></h1>
     <p th:text="${post.body}"></p>
+    <form method="get" action="/posts/update">
+        <input type="hidden" name="title" th:value="${post.title}">
+        <input type='hidden' name="body" th:value="${post.body}">
+        <button type="submit">Submit</button>
+     </form>
+    <form th:action="@{'/posts/'+ ${post.id} + '/delete'}" method="POST">
+        <button class="">DELETE</button>
+    </form>
 </div>
 
 </body>
