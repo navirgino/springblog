@@ -86,9 +86,9 @@ public class PostController {
 //      Post newPost =  postsDao.getOne(id);
 //      String historyOfPost = postsDao.getBy(id).getPostDetails().getHistoryOfPost();
 
-        m.addAttribute("id", postsDao.findById(id));
-        String newPost = postsDao.getOne(id).getPostDetails().getHistoryOfPost();
-        m.addAttribute("newPost", newPost);
+        m.addAttribute("post", postsDao.findById(id));
+//        String newPost = postsDao.getOne(id).getPostDetails().getHistoryOfPost();
+//        m.addAttribute("newPost", newPost);
         return "posts/history";
 
     }
