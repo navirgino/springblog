@@ -2,6 +2,7 @@ package com.codeup.springblog.controllers;
 
 
 import com.codeup.springblog.Post;
+import com.codeup.springblog.PostDetails;
 import com.codeup.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +24,14 @@ public class PostController {
 
 
     @GetMapping(path = "/posts")
-    public String allPosts(Model model){
+    public String allPosts(Model model) {
         model.addAttribute("posts", returnPosts());
         return "posts/index";
     }
 
     @GetMapping(path = "/posts/jpa")
     @ResponseBody
-    public List<Post> returnPosts(){
+    public List<Post> returnPosts() {
         return postsDao.findAll();
     }
 
@@ -39,20 +40,19 @@ public class PostController {
     public String GetPostFormFromUpdateForm(@RequestParam long id,
                                             @RequestParam String title,
                                             @RequestParam String body,
-                                            Model m)
-    {
+                                            Model m) {
         m.addAttribute("title", title);
         m.addAttribute("body", body);
         m.addAttribute("id", id);
         return "posts/update";
     }
+
     //return post info
     @PostMapping(path = "/posts/update")
     public String ReturnUpdatedPostForm(@RequestParam long id,
                                         @RequestParam String title,
-                                      @RequestParam String body,
-                                      Model m)
-    {
+                                        @RequestParam String body,
+                                        Model m) {
         m.addAttribute("id", id);
         m.addAttribute("title", title);
         m.addAttribute("body", body);
@@ -64,11 +64,47 @@ public class PostController {
 
     //delete
     @PostMapping(path = "/posts/{id}/delete")
-    public String deletePostById(@PathVariable long id)
-    {
+    public String deletePostById(@PathVariable long id) {
         postsDao.deleteById(id);
         return "redirect:/posts";
     }
+
+
+    //return a simple view that displays a given post's historyOfPost detail
+//    @GetMapping(path = "posts/history")
+//    @ResponseBody
+//    public String historyOfPost()
+//    {
+//        Post newPost = postsDao.getOne((long) 2);
+//        return newPost.getPostDetails().getHistoryOfPost();
+//
+//    }
+
+    @PostMapping(path = "/posts/{id}/history")
+    public String getHistoryOfPostById(@PathVariable long id,
+                                       Model m) {
+//      Post newPost =  postsDao.getOne(id);
+//      String historyOfPost = postsDao.getBy(id).getPostDetails().getHistoryOfPost();
+
+        m.addAttribute("id", postsDao.findById(id));
+        String newPost = postsDao.getOne(id).getPostDetails().getHistoryOfPost();
+        m.addAttribute("newPost", newPost);
+        return "posts/history";
+
+    }
+
+
+//    @PostMapping(path = "/posts/{id}/history/")
+//    public String postHistoryOfPostById(@PathVariable long id,
+//                                        Model m)
+//    {
+//        postsDao.findById(id);
+//        String history = newPost.getPostDetails().getHistoryOfPost();
+//        m.addAttribute("history", history);
+//        return "posts/history";
+//
+//    }
+
 //    }
 
 
