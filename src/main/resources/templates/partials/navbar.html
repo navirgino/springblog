@@ -7,13 +7,41 @@
 <body>
 
 <navbar th:fragment="main-nav">
-    <ul>
-        <li>Home</li>
-        <li>Portfolio</li>
-        <li>About</li>
-        <li>Contact</li>
-    </ul>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="https://cdn.mos.cms.futurecdn.net/mYgGsgUeqbMMYbZbTK7uP6.jpg" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+
+    </div>
+</nav>
 </navbar>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+<script>
+
+    $(document).ready(function() {
+
+        // Check for click events on the navbar burger icon
+        $(".navbar-burger").click(function() {
+
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            $(".navbar-burger").toggleClass("is-active");
+            $(".navbar-menu").toggleClass("is-active");
+
+        });
+    });
+
+</script>
 
 
 </body>

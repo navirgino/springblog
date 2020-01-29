@@ -36,26 +36,31 @@ public class PostController {
 
     //get post info
     @GetMapping(path = "/posts/update")
-    public String GetPostFormFromUpdateForm(@RequestParam String title,
-                           @RequestParam String body,
-                           Model m)
+    public String GetPostFormFromUpdateForm(@RequestParam long id,
+                                            @RequestParam String title,
+                                            @RequestParam String body,
+                                            Model m)
     {
         m.addAttribute("title", title);
         m.addAttribute("body", body);
+        m.addAttribute("id", id);
         return "posts/update";
     }
     //return post info
     @PostMapping(path = "/posts/update")
-    public String ReturnUpdatedPostForm(@RequestParam String title,
+    public String ReturnUpdatedPostForm(@RequestParam long id,
+                                        @RequestParam String title,
                                       @RequestParam String body,
                                       Model m)
     {
+        m.addAttribute("id", id);
         m.addAttribute("title", title);
         m.addAttribute("body", body);
-        Post updatedPost = new Post(title, body);
+        Post updatedPost = new Post(id, title, body);
         postsDao.save(updatedPost);
         return "redirect:/posts";
     }
+
 
     //delete
     @PostMapping(path = "/posts/{id}/delete")
