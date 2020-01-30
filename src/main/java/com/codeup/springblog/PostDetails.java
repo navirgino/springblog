@@ -10,7 +10,7 @@ public class PostDetails {
     @Id
     public long id;
 
-    @Column(nullable = false, name = "isAwesome")
+    @Column(nullable = false, name = "isAwesome", columnDefinition = "TINYINT(1)")
     public boolean isAwesome;
 
     @Column(nullable = false, name = "historyOfPost")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,6 @@
 </head>
 <body>
 <div th:insert="/partials/navbar.html"></div>
-
 <div th:each="post : ${posts}">
     <div class="tile is-ancestor">
         <div class="tile is-parent">
@@ -17,54 +16,45 @@
                     <article class="tile is-child box">
                         <h1 class="title" th:text="${post.title}"></h1>
                         <p class="content" th:text="${post.body}"></p>
-
                         <form method="get" action="/posts/update">
                             <input type="hidden" name="title" th:value="${post.title}">
                             <input type="hidden" name="body" th:value="${post.body}">
                             <input type="hidden" name="id" th:value="${post.id}">
-
                             <button class="button is-small is-success is-outlined" type="submit">
                                 UPDATE
                                 <br>
-                                <span class="icon is-medium"><i
-                                        name="ion-icon planet"></i></span>
+                                <span class="icon is-medium"><i name="ion-icon planet"></i></span>
                             </button>
                         </form>
 
                         <hr>
-                        <nav class="level is-mobile">
-                            <div class="level-left">
-                                <a class="level-item" aria-label="reply">
-            <span class="icon is-small">
-              <i class="fas fa-reply" aria-hidden="true"></i>
-            </span>
-                                </a>
-                                <a class="level-item" aria-label="retweet">
-            <span class="icon is-small">
-              <i class="fas fa-retweet" aria-hidden="true"></i>
-            </span>
-                                </a>
-                                <a class="level-item" aria-label="like">
-            <span class="icon is-small">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </span>
-                                </a>
-                            </div>
-                        </nav>
-                        <hr>
-                        <form th:action="@{'/posts/' + ${post.id} + '/history'}" method="POST">
+                        <form th:action="@{'/posts/' + ${post.id} + '/history'}" method="GET">
                             <button>get the details</button>
                         </form>
+                        <form th:action="@{'/posts/' + ${post.id} + '/showImg'}" th:method="GET">
+                            <button>show img</button>
+                        </form>
+                        <hr>
                         <form th:action="@{'/posts/' + ${post.id} + '/delete'}"
                               method="POST">
                             <button class="button is-small is-danger is-outlined"><span class="icon is-small"><i class="fas fa-times"></i></span></button>
                         </form>
+                        <!--testing one to many-->
+
+<!--                        <div th:each="image : ${post.images}">-->
+<!--                            <img th:src="${image.url}"/>-->
+
+<!--                        </div>-->
                     </article>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 
 
 </body>

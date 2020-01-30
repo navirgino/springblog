@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Show Img</title>
+</head>
+<body>
+<!--display title of the cat blog post, and three images-->
+
+<h1 th:text="${post.title}"></h1>
+<div th:each="image : ${post.images}">
+    <img th:src="${image.url}"/>
+
+</div>
+</body>
+</html>

@@ -2,23 +2,29 @@ package com.codeup.springblog.controllers;
 
 
 import com.codeup.springblog.Post;
-import com.codeup.springblog.PostDetails;
+import com.codeup.springblog.PostImage;
+import com.codeup.springblog.User;
 import com.codeup.springblog.repositories.PostRepository;
+import com.codeup.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class PostController {
 
-    private List<Post> posts = new ArrayList<>();
-    private PostRepository postsDao;
+    private final PostRepository postsDao;
+    private final UserRepository usersDao;
 
-    public PostController(PostRepository postsDao) {
+    public PostController(PostRepository postsDao,
+                          UserRepository userDao)
+    {
         this.postsDao = postsDao;
+        this.usersDao = userDao;
     }
     /////////////////////////////////////////////////
 
@@ -44,6 +50,7 @@ public class PostController {
         m.addAttribute("title", title);
         m.addAttribute("body", body);
         m.addAttribute("id", id);
+
         return "posts/update";
     }
 
@@ -64,57 +71,47 @@ public class PostController {
 
     //delete
     @PostMapping(path = "/posts/{id}/delete")
-    public String deletePostById(@PathVariable long id) {
+    public String deletePostById(@PathVariable long id)
+    {
         postsDao.deleteById(id);
         return "redirect:/posts";
     }
 
 
-    //return a simple view that displays a given post's historyOfPost detail
-//    @GetMapping(path = "posts/history")
-//    @ResponseBody
-//    public String historyOfPost()
-//    {
-//        Post newPost = postsDao.getOne((long) 2);
-//        return newPost.getPostDetails().getHistoryOfPost();
-//
-//    }
-
-    @PostMapping(path = "/posts/{id}/history")
-    public String getHistoryOfPostById(@PathVariable long id,
-                                       Model m) {
-//      Post newPost =  postsDao.getOne(id);
-//      String historyOfPost = postsDao.getBy(id).getPostDetails().getHistoryOfPost();
-
+//    return a simple view that displays a given post's historyOfPost detail
+    @GetMapping(path = "posts/{id}/history")
+    public String historyOfPost(@PathVariable long id, Model m)
+    {
         m.addAttribute("post", postsDao.findById(id));
-//        String newPost = postsDao.getOne(id).getPostDetails().getHistoryOfPost();
-//        m.addAttribute("newPost", newPost);
+
         return "posts/history";
 
     }
 
 
-//    @PostMapping(path = "/posts/{id}/history/")
-//    public String postHistoryOfPostById(@PathVariable long id,
-//                                        Model m)
-//    {
-//        postsDao.findById(id);
-//        String history = newPost.getPostDetails().getHistoryOfPost();
-//        m.addAttribute("history", history);
-//        return "posts/history";
-//
-//    }
 
-//    }
 
+    @GetMapping(path = "/posts/{id}/showImg")
+    public String getImageById(@PathVariable long id, Model m)
+    {
+        m.addAttribute("post", postsDao.findById(id));
+        return "posts/image";
+    }
 
 //    @GetMapping("/posts/jpa/create")
-//    public void createPost() {
+//    public void createPost()
+//    {
 //        Post post = new Post();
+//        User user = new User();
+//
 //        post.setTitle("a new post");
 //        post.setBody("a new body");
+//        post.setUser(user);
 //        postsDao.save(post);
 //    }
+
+
+
 //
 //    @GetMapping("posts/order")
 //    public String searchResults(Model model){

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -28,27 +29,43 @@ public class Post {
     public String body;
 
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
-    private PostDetails postDetail;
     //@MapsId tells Hibernate to use the id column of post details as both primary key and foreign key.
     // Also, notice that the @Id column of the Address entity no longer uses the @GeneratedValue annotation.
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private PostDetails postDetail;
+    ////////////////
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostImage> images;
+    ///////////////
+    @ManyToOne
+    @JoinColumn(name = "posts_id")
+    private User user;
 
 
     public Post() {
     }
 
-    public Post(long id, String title, String body, PostDetails postDetail) {
+    public Post(long id,
+                String title,
+                String body,
+                PostDetails postDetail,
+                List<PostImage> images,
+                User users) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.postDetail = postDetail;
+        this.images = images;
+        this.user = users;
 
     }
 
-    public Post(String title, String body, PostDetails postDetails) {
+    public Post(String title, String body, PostDetails postDetails, User user) {
         this.title = title;
         this.body = body;
         this.postDetail = postDetails;
+        this.user = user;
+
     }
 
     public Post(long id, String title, String body) {
@@ -82,5 +99,35 @@ public class Post {
         this.body = body;
     }
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public PostDetails getPostDetail() {
+        return postDetail;
+    }
+
+    public void setPostDetail(PostDetails postDetail) {
+        this.postDetail = postDetail;
+    }
+
+    public List<PostImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<PostImage> images) {
+        this.images = images;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
