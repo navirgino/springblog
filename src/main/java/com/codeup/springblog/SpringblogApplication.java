@@ -10,7 +10,7 @@ public class SpringblogApplication {
 
         SpringApplication.run(SpringblogApplication.class, args);
 
-        System.out.println("test");
+        System.out.println("good to go");
     }
 
 }
