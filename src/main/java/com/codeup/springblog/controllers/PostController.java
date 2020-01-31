@@ -17,14 +17,14 @@ import java.util.Set;
 @Controller
 public class PostController {
 
-    private final PostRepository postsDao;
-    private final UserRepository usersDao;
+    private PostRepository postsDao;
+    private UserRepository userDao;
 
     public PostController(PostRepository postsDao,
                           UserRepository userDao)
     {
         this.postsDao = postsDao;
-        this.usersDao = userDao;
+        this.userDao = userDao;
     }
     /////////////////////////////////////////////////
 
@@ -41,32 +41,32 @@ public class PostController {
         return postsDao.findAll();
     }
 
-    //get post info
-    @GetMapping(path = "/posts/update")
-    public String GetPostFormFromUpdateForm(@RequestParam long id,
-                                            @RequestParam String title,
-                                            @RequestParam String body,
-                                            Model m) {
-        m.addAttribute("title", title);
-        m.addAttribute("body", body);
-        m.addAttribute("id", id);
-
-        return "posts/update";
-    }
-
-    //return post info
-    @PostMapping(path = "/posts/update")
-    public String ReturnUpdatedPostForm(@RequestParam long id,
-                                        @RequestParam String title,
-                                        @RequestParam String body,
-                                        Model m) {
-        m.addAttribute("id", id);
-        m.addAttribute("title", title);
-        m.addAttribute("body", body);
-        Post updatedPost = new Post(id, title, body);
-        postsDao.save(updatedPost);
-        return "redirect:/posts";
-    }
+//    //get post info
+//    @GetMapping(path = "/posts/update")
+//    public String GetPostFormFromUpdateForm(@RequestParam long id,
+//                                            @RequestParam String title,
+//                                            @RequestParam String body,
+//                                            Model m) {
+//        m.addAttribute("title", title);
+//        m.addAttribute("body", body);
+//        m.addAttribute("id", id);
+//
+//        return "posts/update";
+//    }
+//
+//    //return post info
+//    @PostMapping(path = "/posts/update")
+//    public String ReturnUpdatedPostForm(@RequestParam long id,
+//                                        @RequestParam String title,
+//                                        @RequestParam String body,
+//                                        Model m) {
+//        m.addAttribute("id", id);
+//        m.addAttribute("title", title);
+//        m.addAttribute("body", body);
+//        Post updatedPost = new Post(id, title, body);
+//        postsDao.save(updatedPost);
+//        return "redirect:/posts";
+//    }
 
 
     //delete
@@ -88,15 +88,59 @@ public class PostController {
 
     }
 
-
-
-
     @GetMapping(path = "/posts/{id}/showImg")
     public String getImageById(@PathVariable long id, Model m)
     {
         m.addAttribute("post", postsDao.findById(id));
         return "posts/image";
     }
+
+    @GetMapping(path = "/posts/{id}/showEmail")
+    public String getUserEmailById(@PathVariable long id, Model m)
+    {
+        m.addAttribute("post", postsDao.findById(id));
+        return "posts/show";
+    }
+
+
+
+    @GetMapping(path = "/posts/create")
+    public String createAndGetFormForPost(Model m)
+    {
+        m.addAttribute("post", new Post());
+        return "posts/create";
+
+    }
+
+    @PostMapping(path = "/posts/create")
+    public String createAndPostFormForPost(@ModelAttribute Post post)
+    {
+        postsDao.save(post);
+        return "redirect:/posts";
+    }
+
+    @GetMapping(path = "/posts/{id}/update")
+    public String updateAndGetFormForPost(Model m, @PathVariable long id)
+    {
+        m.addAttribute("post", postsDao.getOne(id));
+        return "posts/update";
+
+    }
+
+    @PostMapping(path = "/posts/{id}/update")
+    public String updateAndPostFormForPost(@ModelAttribute Post post, @PathVariable String id)
+    {
+        postsDao.save(post);
+        return "redirect:/posts";
+    }
+
+
+//    @GetMapping(path = "/posts/{id}/email")
+//    public String getUserEmailOfPost(@PathVariable long id, Model m)
+//    {
+//        m.addAttribute("post", postsDao.findById(id));
+//        return "posts/show";
+//    }
 
 //    @GetMapping("/posts/jpa/create")
 //    public void createPost()

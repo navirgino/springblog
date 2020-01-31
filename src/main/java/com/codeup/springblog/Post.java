@@ -38,7 +38,7 @@ public class Post {
     private List<PostImage> images;
     ///////////////
     @ManyToOne
-    @JoinColumn(name = "posts_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
 
@@ -58,6 +58,11 @@ public class Post {
         this.images = images;
         this.user = users;
 
+    }
+
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
     }
 
     public Post(String title, String body, PostDetails postDetails, User user) {

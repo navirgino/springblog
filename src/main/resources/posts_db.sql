@@ -1,23 +1,14 @@
-# create database posts_db;
-#
-# use posts_db;
-# drop database posts_db;
-#
-# show tables;
-#
-# drop table if exists posts;
-#
-# show tables;
-#
-# describe posts;
-#
-# describe post_details;
+drop database posts_db;
+
+create database posts_db;
+
 use posts_db;
-INSERT INTO posts (title, body)
+
+INSERT INTO posts (id, title, body, user_id)
 VALUES
-('title1', 'oh'),
-('title2', 'hey'),
-('title3', 'there');
+(1, 'title1', 'oh', 1),
+(2, 'title2', 'hey', 2),
+(3, 'title3', 'there', 3);
 
 
 INSERT INTO post_details(history_of_post, is_awesome,topic_description, post_id)
