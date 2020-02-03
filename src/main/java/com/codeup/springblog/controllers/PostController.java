@@ -6,6 +6,7 @@ import com.codeup.springblog.PostImage;
 import com.codeup.springblog.User;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
+import com.codeup.springblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +20,23 @@ public class PostController {
 
     private PostRepository postsDao;
     private UserRepository userDao;
+    private final EmailService emailService;
+
 
     public PostController(PostRepository postsDao,
-                          UserRepository userDao)
+                          UserRepository userDao,
+                          EmailService emailService)
     {
         this.postsDao = postsDao;
         this.userDao = userDao;
+        this.emailService = emailService;
     }
     /////////////////////////////////////////////////
 
 
     @GetMapping(path = "/posts")
     public String allPosts(Model model) {
-        model.addAttribute("posts", returnPosts());
+        model.addAttribute("posts", postsDao.findAll());
         return "posts/index";
     }
 
@@ -41,32 +46,6 @@ public class PostController {
         return postsDao.findAll();
     }
 
-//    //get post info
-//    @GetMapping(path = "/posts/update")
-//    public String GetPostFormFromUpdateForm(@RequestParam long id,
-//                                            @RequestParam String title,
-//                                            @RequestParam String body,
-//                                            Model m) {
-//        m.addAttribute("title", title);
-//        m.addAttribute("body", body);
-//        m.addAttribute("id", id);
-//
-//        return "posts/update";
-//    }
-//
-//    //return post info
-//    @PostMapping(path = "/posts/update")
-//    public String ReturnUpdatedPostForm(@RequestParam long id,
-//                                        @RequestParam String title,
-//                                        @RequestParam String body,
-//                                        Model m) {
-//        m.addAttribute("id", id);
-//        m.addAttribute("title", title);
-//        m.addAttribute("body", body);
-//        Post updatedPost = new Post(id, title, body);
-//        postsDao.save(updatedPost);
-//        return "redirect:/posts";
-//    }
 
 
     //delete
@@ -95,12 +74,12 @@ public class PostController {
         return "posts/image";
     }
 
-    @GetMapping(path = "/posts/{id}/showEmail")
-    public String getUserEmailById(@PathVariable long id, Model m)
-    {
-        m.addAttribute("post", postsDao.findById(id));
-        return "posts/show";
-    }
+//    @GetMapping(path = "/posts/{id}/showEmail")
+//    public String getUserEmailById(@PathVariable long id, Model m)
+//    {
+//        m.addAttribute("post", postsDao.findById(id));
+//        return "posts/show";
+//    }
 
 
 
@@ -115,7 +94,9 @@ public class PostController {
     @PostMapping(path = "/posts/create")
     public String createAndPostFormForPost(@ModelAttribute Post post)
     {
+        post.setUser(userDao.getOne(2L));
         postsDao.save(post);
+        emailService.prepareAndSend(post, "subject", "body - hello");
         return "redirect:/posts";
     }
 
@@ -134,68 +115,6 @@ public class PostController {
         return "redirect:/posts";
     }
 
-
-//    @GetMapping(path = "/posts/{id}/email")
-//    public String getUserEmailOfPost(@PathVariable long id, Model m)
-//    {
-//        m.addAttribute("post", postsDao.findById(id));
-//        return "posts/show";
-//    }
-
-//    @GetMapping("/posts/jpa/create")
-//    public void createPost()
-//    {
-//        Post post = new Post();
-//        User user = new User();
-//
-//        post.setTitle("a new post");
-//        post.setBody("a new body");
-//        post.setUser(user);
-//        postsDao.save(post);
-//    }
-
-
-
-//
-//    @GetMapping("posts/order")
-//    public String searchResults(Model model){
-//        model.addAttribute("searchResults", returnPostsByTitle());
-//        return "posts/results";
-//    }
-//
-//    @GetMapping("posts/order/jpa")
-//    @ResponseBody
-//    public Post returnPostsByTitle()
-//    {
-//        return postsDao.findByTitle("t");
-//    }
-
-//    @GetMapping("/posts/search")
-//    @ResponseBody
-//    public Post returnPostByTitle()
-//    {
-//        return postsDao.findByTitle("t");
-//    }
-
-
-//    @GetMapping(path = "/posts/show")
-//    public String viewOnePost(Model model)
-//    {
-//        Post newPost = new Post("my tweet", "banana time");
-//        model.addAttribute("newPost", newPost);
-//        return "posts/show";
-//    }
-
-
-//    @GetMapping("/posts/{id}")
-//    public String viewOnePostById(@PathVariable long id, Model model)
-//    {
-//        Post post1 = new Post(id,"Title 1", "Description 1");
-//        Post post2 = new Post(id,"Title 2", "Description 2");
-//        model.addAttribute("post1", post1);
-//        model.addAttribute("post2",post2);
-//        return "posts/show";
-//    }
 
 
 }

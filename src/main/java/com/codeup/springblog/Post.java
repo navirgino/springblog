@@ -1,6 +1,7 @@
 package com.codeup.springblog;
 
 import com.codeup.springblog.repositories.PostRepository;
+import com.codeup.springblog.services.EmailService;
 import org.hibernate.tool.schema.extract.spi.ExtractionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -40,6 +41,7 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 
 
     public Post() {

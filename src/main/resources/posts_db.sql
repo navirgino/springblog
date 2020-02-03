@@ -4,6 +4,7 @@ create database posts_db;
 
 use posts_db;
 
+
 INSERT INTO posts (id, title, body, user_id)
 VALUES
 (1, 'title1', 'oh', 1),
