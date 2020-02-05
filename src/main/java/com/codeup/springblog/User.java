@@ -34,6 +34,12 @@ public class User {
         this.password = password;
         this.posts = posts;
     }
+    public User(User copy){
+        id = copy.id;
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
 
     public User(String username, String email, String password) {
         this.username = username;

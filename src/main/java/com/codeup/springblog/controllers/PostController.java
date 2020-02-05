@@ -7,6 +7,7 @@ import com.codeup.springblog.User;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
 import com.codeup.springblog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,7 @@ public class PostController {
 
     public PostController(PostRepository postsDao,
                           UserRepository userDao,
-                          EmailService emailService)
-    {
+                          EmailService emailService) {
         this.postsDao = postsDao;
         this.userDao = userDao;
         this.emailService = emailService;
@@ -47,20 +47,17 @@ public class PostController {
     }
 
 
-
     //delete
     @PostMapping(path = "/posts/{id}/delete")
-    public String deletePostById(@PathVariable long id)
-    {
+    public String deletePostById(@PathVariable long id) {
         postsDao.deleteById(id);
         return "redirect:/posts";
     }
 
 
-//    return a simple view that displays a given post's historyOfPost detail
+    //    return a simple view that displays a given post's historyOfPost detail
     @GetMapping(path = "posts/{id}/history")
-    public String historyOfPost(@PathVariable long id, Model m)
-    {
+    public String historyOfPost(@PathVariable long id, Model m) {
         m.addAttribute("post", postsDao.findById(id));
 
         return "posts/history";
@@ -68,24 +65,14 @@ public class PostController {
     }
 
     @GetMapping(path = "/posts/{id}/showImg")
-    public String getImageById(@PathVariable long id, Model m)
-    {
+    public String getImageById(@PathVariable long id, Model m) {
         m.addAttribute("post", postsDao.findById(id));
         return "posts/image";
     }
 
-//    @GetMapping(path = "/posts/{id}/showEmail")
-//    public String getUserEmailById(@PathVariable long id, Model m)
-//    {
-//        m.addAttribute("post", postsDao.findById(id));
-//        return "posts/show";
-//    }
-
-
 
     @GetMapping(path = "/posts/create")
-    public String createAndGetFormForPost(Model m)
-    {
+    public String createAndGetFormForPost(Model m) {
         m.addAttribute("post", new Post());
         return "posts/create";
 
@@ -94,27 +81,25 @@ public class PostController {
     @PostMapping(path = "/posts/create")
     public String createAndPostFormForPost(@ModelAttribute Post post)
     {
-        post.setUser(userDao.getOne(2L));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        post.setUser(user);
         postsDao.save(post);
         emailService.prepareAndSend(post, "subject", "body - hello");
         return "redirect:/posts";
     }
 
     @GetMapping(path = "/posts/{id}/update")
-    public String updateAndGetFormForPost(Model m, @PathVariable long id)
-    {
+    public String updateAndGetFormForPost(Model m, @PathVariable long id) {
         m.addAttribute("post", postsDao.getOne(id));
         return "posts/update";
 
     }
 
     @PostMapping(path = "/posts/{id}/update")
-    public String updateAndPostFormForPost(@ModelAttribute Post post, @PathVariable String id)
-    {
+    public String updateAndPostFormForPost(@ModelAttribute Post post, @PathVariable String id) {
         postsDao.save(post);
         return "redirect:/posts";
     }
-
 
 
 }

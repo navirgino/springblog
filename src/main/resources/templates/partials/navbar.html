@@ -14,12 +14,20 @@
             <img src="https://cdn.mos.cms.futurecdn.net/mYgGsgUeqbMMYbZbTK7uP6.jpg" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="28">
         </a>
 
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
+<!--        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">-->
+<!--            <span aria-hidden="true"></span>-->
+<!--            <span aria-hidden="true"></span>-->
+<!--            <span aria-hidden="true"></span>-->
+<!--        </a>-->
 
+        <ul>
+            <!-- More links here... -->
+            <li>
+                <form th:action="@{/logout}" th:method="post">
+                    <button class="btn-link btn" style="margin-top: 8px">Logout</button>
+                </form>
+            </li>
+        </ul>
     </div>
 </nav>
 </navbar>

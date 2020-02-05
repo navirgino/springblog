@@ -10,12 +10,13 @@ import java.util.ArrayList;
 
 @Controller
 public class LoginController {
-    @GetMapping("/login")
+
+    @GetMapping("users/login")
     public String showLoginForm(){
-        return "login.html";
+        return "users/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("users/login")
     public String login(@RequestParam(name="username") String username,
                         @RequestParam(name="password") String password,
                         Model model)
@@ -31,6 +32,6 @@ public class LoginController {
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("username","this is your username: " + username);
         model.addAttribute("password","this is your password: " + password);
-        return "profile.html";
+        return "profile";
     }
 }
